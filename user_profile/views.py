@@ -34,7 +34,7 @@ def create(request):
             )
             os.remove(file_path)
             instance.delete()
-        return render(request, 'profile/create.html', locals())
+    return render(request, 'profile/create.html', locals())
 
 
 def form_create(request):
