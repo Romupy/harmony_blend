@@ -1,11 +1,9 @@
 import os
 
 from django.conf import settings
-from django.shortcuts import render, get_object_or_404
-from django.http import Http404
+from django.shortcuts import render, get_object_or_404, redirect
 from user_profile.models import Profile
 from .forms import ProfileForm
-import requests
 
 
 def read(request, profile_id):
@@ -20,20 +18,11 @@ def create(request):
         file_path = os.path.join(
             settings.MEDIA_ROOT + '/images/', uploaded_file.name
         )
-        instance = form.save()
-        files = {'image': (uploaded_file.name, open(file_path, 'rb'))}
-        response = requests.post(
-            'http://127.0.0.1:8000/image_analysis/face', files=files
-        )
-        content = response.json()
-        if 0 < content['analysis_results']['Number_of_faces_detected'] < 2:
+        profile = form.save()
+        valid, message = profile.check_profile_image()
+        if not valid:
             return render(request, 'profile/create.html', locals())
-        else:
-            file_path = os.path.join(
-                settings.MEDIA_ROOT + '/images/', uploaded_file.name
-            )
-            os.remove(file_path)
-            instance.delete()
+        return redirect('profile_read', profile_id=profile.pk)
     return render(request, 'profile/create.html', locals())
 
 
