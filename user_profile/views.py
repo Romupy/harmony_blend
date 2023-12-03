@@ -18,7 +18,6 @@ def create_profile(request):
     django.http.HttpResponse -- An HttpResponse object representing the view
     response
     """
-
     form = ProfileForm(request.POST, request.FILES)
     if form.is_valid():
         uploaded_file = form.cleaned_data['image']

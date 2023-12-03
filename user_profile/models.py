@@ -3,11 +3,17 @@ import os
 import requests
 from django.conf import settings
 from django.db import models
+from django.db.models.signals import pre_save
+from django.dispatch import receiver
 from django.utils import timezone
+from PIL import Image
 import uuid
 
 
 class Profile(models.Model):
+    MAX_SIZE = (500, 500)
+    QUALITY = 40
+
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     image = models.ImageField(
         upload_to='images/', verbose_name="Photo de profil"
@@ -59,3 +65,28 @@ class Profile(models.Model):
             os.remove(file_path)
             self.delete()
         return valid, message
+
+    @receiver(pre_save, sender='user_profile.Profile')
+    def compress_image_before_save(sender, instance, **kwargs):
+        """
+        Compress and resize the image before saving it
+
+        Keyword arguments:
+        sender -- (django.db.models.Model) The model class
+        instance -- (django.db.models.Model) The actual instance being saved
+        """
+        if (hasattr(instance, 'image')
+                and instance.image and instance.image.file):
+            sender.compress_and_resize_image(instance.image)
+
+    @staticmethod
+    def compress_and_resize_image(image):
+        """
+        Compress and resize the image
+
+        Keyword arguments:
+        image -- (django.db.models.ImageField) The image to compress and resize
+        """
+        with Image.open(image.path) as img:
+            img.thumbnail(Profile.MAX_SIZE)
+            img.save(image.path, "JPEG", quality=Profile.QUALITY)
