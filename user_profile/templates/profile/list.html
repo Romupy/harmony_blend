@@ -8,15 +8,16 @@
     <div id="page-inner">
         <div class="row">
             <div class="col-md-12">
-                <h1 class="page-head-line">Profil de {{ profile.first_name }}</h1>
+                <h1 class="page-head-line">Liste des Profils</h1>
             </div>
         </div>
         <!-- /. ROW  -->
+        {% for profile in profiles %}
         <div class="row">
-            <div class="col-md-5">
+            <div class="col-md-4">
             </div>
             <div class="col-md-2">
-                    <img src="{{ profile.image.url }}" class="img-circle img-responsive center-block" alt="Image de profil" />
+                <img src="{{ profile.image.url }}" class="img-circle img-responsive center-block" alt="Image de profil" />
             </div>
             <div class="col-md-5">
             </div>
@@ -34,6 +35,7 @@
             <div class="col-md-7">
             </div>
         </div>
+        {% endfor %}
         <!-- /. ROW  -->
     </div>
     <!-- /. PAGE INNER  -->

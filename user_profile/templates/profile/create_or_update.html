@@ -13,7 +13,11 @@
         <!-- /. ROW  -->
         <div class="row">
             <div class="col-md-4">
-                <form action="{% url 'profile_create' %}" method="post" enctype="multipart/form-data">
+                {% if profile %}
+                    <form action="{% url 'update_profile' profile.id %}" method="post" enctype="multipart/form-data">
+                {% else %}
+                    <form action="{% url 'create_profile' %}" method="post" enctype="multipart/form-data">
+                {% endif %}
                     {% csrf_token %}
                     <div class="row">
                     <div class="col-md-12">
