@@ -3,7 +3,7 @@ import os
 import requests
 from django.conf import settings
 from django.db import models
-from django.db.models.signals import pre_save
+from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils import timezone
 from PIL import Image
@@ -48,6 +48,12 @@ class Profile(models.Model):
         response = requests.post(
             f'{settings.AI_COMPUTER_VISION_API_URL}/face', files=files
         )
+        if response.status_code != 201:
+            valid = True
+            message = ("Impossible de vérifier l'image de profil, "
+                       "artificial_intelligence_computer_vision_api a "
+                       "rencontré une erreur !")
+            return valid, message
         content = response.json()['analysis_results']
         if content['number_of_faces_detected'] == 1:
             self.skin_brightness = content['facial_skin'][0]['skin_brightness']
@@ -66,7 +72,7 @@ class Profile(models.Model):
             self.delete()
         return valid, message
 
-    @receiver(pre_save, sender='user_profile.Profile')
+    @receiver(post_save, sender='user_profile.Profile')
     def compress_image_before_save(sender, instance, **kwargs):
         """
         Compress and resize the image before saving it
@@ -87,6 +93,9 @@ class Profile(models.Model):
         Keyword arguments:
         image -- (django.db.models.ImageField) The image to compress and resize
         """
-        with Image.open(image.path) as img:
+        with Image.open(image) as img:
+            if img.mode == 'RGBA':
+                img = img.convert('RGB')
             img.thumbnail(Profile.MAX_SIZE)
-            img.save(image.path, "JPEG", quality=Profile.QUALITY)
+            file_path = os.path.join(settings.MEDIA_ROOT + "/" + image.name)
+            img.save(file_path, "JPEG", quality=Profile.QUALITY)

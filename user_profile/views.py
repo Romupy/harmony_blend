@@ -20,13 +20,10 @@ def create_profile(request):
     """
     form = ProfileForm(request.POST, request.FILES)
     if form.is_valid():
-        uploaded_file = form.cleaned_data['image']
-        file_path = os.path.join(
-            settings.MEDIA_ROOT + '/images/', uploaded_file.name
-        )
         profile = form.save()
         valid, message = profile.check_profile_image()
         if not valid:
+            profile = None
             return render(request, 'profile/create_or_update.html', locals())
         return redirect('read_profile', profile_id=profile.pk)
     return render(request, 'profile/create_or_update.html', locals())
