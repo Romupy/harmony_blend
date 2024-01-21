@@ -38,7 +38,7 @@ class Profile(models.Model):
         ordering = ['registration_date']
 
     def __str__(self):
-        return f"Profil de {self.first_name}"
+        return f"Profil de {self.first_name} {self.last_name}"
 
     def check_profile_image(self):
         message = "Image de profil conforme !"

@@ -80,10 +80,6 @@ def update_profile(request, profile_id):
         request.POST or None, request.FILES or None, instance=profile
     )
     if form.is_valid():
-        uploaded_file = form.cleaned_data['image']
-        file_path = os.path.join(
-            settings.MEDIA_ROOT + '/images/', uploaded_file.name
-        )
         profile = form.save()
         valid, message = profile.check_profile_image()
         if not valid:
