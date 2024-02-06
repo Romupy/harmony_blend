@@ -1,52 +1,29 @@
-import os
-
-from django.conf import settings
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
-from user_profile.models import Profile
-from .forms import ProfileForm, ProfileUpdateForm
+from user_profile.models import UserProfile
+from .forms import UserProfileUpdateForm
 
 
-def create_profile(request):
+@login_required
+def read_user_profile(request, user_profile_id):
     """
-    View to create a profile
+    View to read a user_profile
 
     Keyword arguments:
     request -- (django.http.HttpRequest) The HttpRequest object containing all
     information about HTTP request.
+    profile_id -- (str) The user_profile id
 
     Returns:
     django.http.HttpResponse -- An HttpResponse object representing the view
     response
     """
-    form = ProfileForm(request.POST, request.FILES)
-    if form.is_valid():
-        profile = form.save()
-        valid, message = profile.check_profile_image()
-        if not valid:
-            profile = None
-            return render(request, 'profile/create_or_update.html', locals())
-        return redirect('read_profile', profile_id=profile.pk)
-    return render(request, 'profile/create_or_update.html', locals())
+    user_profile = get_object_or_404(UserProfile, id=user_profile_id)
+    return render(request, 'user_profile/read.html', locals())
 
 
-def read_profile(request, profile_id):
-    """
-    View to read a profile
-
-    Keyword arguments:
-    request -- (django.http.HttpRequest) The HttpRequest object containing all
-    information about HTTP request.
-    profile_id -- (str) The profile id
-
-    Returns:
-    django.http.HttpResponse -- An HttpResponse object representing the view
-    response
-    """
-    profile = get_object_or_404(Profile, id=profile_id)
-    return render(request, 'profile/read.html', locals())
-
-
-def list_profiles(request):
+@login_required
+def list_user_profiles(request):
     """
     View to list profiles
 
@@ -58,39 +35,41 @@ def list_profiles(request):
     django.http.HttpResponse -- An HttpResponse object representing the view
     response
     """
-    profiles = Profile.objects.all()
-    return render(request, 'profile/list.html', locals())
+    profiles = UserProfile.objects.all()
+    return render(request, 'user_profile/list.html', locals())
 
 
-def update_profile(request, profile_id):
+@login_required
+def update_user_profile(request, user_profile_id):
     """
-    View to update a profile
+    View to update a user_profile
 
     Keyword arguments:
     request -- (django.http.HttpRequest) The HttpRequest object containing all
     information about HTTP request.
-    profile_id -- (str) The profile id
+    profile_id -- (str) The user_profile id
 
     Returns:
     django.http.HttpResponse -- An HttpResponse object representing the view
     response
     """
-    profile = get_object_or_404(Profile, id=profile_id)
-    form = ProfileUpdateForm(
-        request.POST or None, request.FILES or None, instance=profile
+    user_profile = get_object_or_404(UserProfile, id=user_profile_id)
+    form = UserProfileUpdateForm(
+        request.POST or None, request.FILES or None, instance=user_profile
     )
     if form.is_valid():
-        profile = form.save()
-        valid, message = profile.check_profile_image()
+        user_profile = form.save()
+        valid, message = user_profile.check_profile_image()
         if not valid:
-            return render(request, 'profile/create_or_update.html', locals())
-        return redirect('read_profile', profile_id=profile.pk)
-    return render(request, 'profile/create_or_update.html', locals())
+            return render(request, 'user_profile/update.html', locals())
+        return redirect('read_user_profile', user_profile_id=user_profile.id)
+    return render(request, 'user_profile/update.html', locals())
 
 
-def delete_profile(request, profile_id):
+@login_required
+def delete_user_profile(request, user_profile_id):
     """
-    View to delete a profile
+    View to delete a user_profile
 
     Keyword arguments:
     request -- (django.http.HttpRequest) The HttpRequest object containing all
@@ -100,8 +79,8 @@ def delete_profile(request, profile_id):
     django.http.HttpResponse -- An HttpResponse object representing the view
     response
     """
-    profile = get_object_or_404(Profile, id=profile_id)
+    user_profile = get_object_or_404(UserProfile, id=user_profile_id)
     if request.method == 'POST':
-        profile.delete()
+        user_profile.delete()
         return redirect('list_profiles')
-    return render(request, 'profile/delete.html', locals())
+    return render(request, 'user_profile/delete.html', locals())

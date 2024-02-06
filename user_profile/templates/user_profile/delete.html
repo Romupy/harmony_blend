@@ -24,7 +24,7 @@
             </div>
             <div class="col-md-4">
                 <p>Êtes-vous sûr de vouloir supprimer votre profil ?</p>
-                <form action="{% url 'delete_profile' profile.id %}" method="post">
+                <form action="{% url 'delete_profile' user_profile.id %}" method="post">
                     {% csrf_token %}
                     <input type="submit" value="Supprimer" />
                 </form>

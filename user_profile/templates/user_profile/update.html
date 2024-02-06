@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Ma page d'accueil{% endblock %}
+
+{% block content %}
+<div id="page-wrapper">
+    <div id="page-inner">
+        <div class="row">
+            <div class="col-md-12">
+                <h1 class="page-head-line">Renseignement des informations du profil</h1>
+            </div>
+        </div>
+        <!-- /. ROW  -->
+        <div class="row">
+            <div class="col-md-4">
+                <form action="{% url 'update_user_profile' user_profile.id %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="row">
+                <div class="col-md-12">
+                    {% if message %}
+                    <div class="alert alert-danger">
+                        <p>
+                            {{ message }}
+                        </p>
+                    </div>
+                    {% endif %}
+                    <div class="alert alert-info">
+                        <p>
+                            Téléchargez votre photo de profil.<br>Sur votre
+                            photo de profil, ne doit apparaitre que vous.
+                            Votre visage doit être clairement visible et
+                            sans lunette.
+                        </p>
+                    </div>
+                </div>
+                    {{ form.as_p }}
+                    <input type="submit" value="Soumettre" />
+                </form>
+            </div>
+        </div>
+        <!-- /. ROW  -->
+    </div>
+    <!-- /. PAGE INNER  -->
+</div>
+{% endblock %}

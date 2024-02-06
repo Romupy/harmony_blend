@@ -8,16 +8,15 @@
     <div id="page-inner">
         <div class="row">
             <div class="col-md-12">
-                <h1 class="page-head-line">Liste des Profils</h1>
+                <h1 class="page-head-line">{{ user_profile }}</h1>
             </div>
         </div>
         <!-- /. ROW  -->
-        {% for profile in profiles %}
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-5">
             </div>
             <div class="col-md-2">
-                <img src="{{ profile.image.url }}" class="img-circle img-responsive center-block" alt="Image de profil" />
+                    <img src="{{ user_profile.image.url }}" class="img-circle img-responsive center-block" alt="Image de profil" />
             </div>
             <div class="col-md-5">
             </div>
@@ -27,15 +26,14 @@
             <div class="col-md-1">
             </div>
             <div class="col-md-4">
-                <p><b>Prénom :</b> {{ profile.first_name }}</p>
-                <p><b>Nom :</b> {{ profile.last_name }}</p>
-                <p><b>Présentation :</b> {{ profile.presentation }}</p>
-                <p><b>Date d'inscription :</b> Le {{ profile.registration_date|date:"d/m/Y" }} à {{ profile.registration_date|date:"H:i:s" }}</p>
+                <p><b>Prénom :</b> {{ user_profile.first_name }}</p>
+                <p><b>Nom :</b> {{ user_profile.last_name }}</p>
+                <p><b>Présentation :</b> {{ user_profile.presentation }}</p>
+                <p><b>Date d'inscription :</b> Le {{ user_profile.registration_date|date:"d/m/Y" }} à {{ user_profile.registration_date|date:"H:i:s" }}</p>
             </div>
             <div class="col-md-7">
             </div>
         </div>
-        {% endfor %}
         <!-- /. ROW  -->
     </div>
     <!-- /. PAGE INNER  -->

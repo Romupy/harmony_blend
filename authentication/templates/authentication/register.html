@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Harmony Blend{% endblock %}
+
+{% block content %}
+<div id="page-wrapper">
+    <div id="page-inner">
+        <div class="row">
+            <div class="col-md-12">
+                <h1 class="page-head-line">Inscription</h1>
+            </div>
+        </div>
+                <!-- /. ROW  -->
+        <div class="row">
+            <div class="col-md-4">
+            </div>
+            <div class="col-md-8">
+                <form action="{% url 'register' %}" method="post">
+                    {% csrf_token %}
+                    <div class="row">
+                    <div class="col-md-12">
+                        {% for message in  messages %}
+                        <div class="alert alert-danger">
+                            <p>
+                                {{ message }}
+                            </p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                    {{ form.as_p }}
+                    <input type="submit" value="Soumettre" />
+                </form>
+            </div>
+        </div>
+        <!-- /. ROW  -->
+    </div>
+    <!-- /. PAGE INNER  -->
+</div>
+{% endblock %}
