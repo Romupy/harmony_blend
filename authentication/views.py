@@ -32,7 +32,10 @@ def register(request):
             user.user_profile.first_name = form.cleaned_data['first_name']
             user.user_profile.last_name = form.cleaned_data['last_name']
             user.user_profile.save()
-            messages.success(request, "Inscription réussie !")
+            messages.success(request, "Inscription réussie")
+            user = authenticate(request, username=email, password=password)
+            if user is not None:
+                login(request, user)
             return redirect(
                 'update_user_profile', user_profile_id=user.user_profile.pk
             )
@@ -61,7 +64,9 @@ def connection(request):
         )
         if user is not None:
             login(request, user)
-            return redirect('read_user_profile', user_profile_id=user.user_profile.id)
+            return redirect(
+                'read_user_profile', user_profile_id=user.user_profile.id
+            )
         else:
             messages.error(
                 request, "Erreur lors de la tentative de connexion"
@@ -73,4 +78,5 @@ def connection(request):
 @login_required
 def log_off(request):
     logout(request)
+    messages.success(request, "Déconnexion réussie")
     return redirect('connection')

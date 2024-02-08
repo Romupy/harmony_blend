@@ -71,13 +71,11 @@ class UserProfile(models.Model):
             valid = False
             message = "Image de profil non conforme: aucun visage détecté !"
             os.remove(file_path)
-            self.delete()
         elif content['number_of_faces_detected'] > 1:
             valid = False
             message = ("Image de profil non conforme: plusieurs visages "
                        "détectés !")
             os.remove(file_path)
-            self.delete()
         return valid, message
 
     @staticmethod

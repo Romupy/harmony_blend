@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 from user_profile.models import UserProfile
@@ -35,7 +36,7 @@ def list_user_profiles(request):
     django.http.HttpResponse -- An HttpResponse object representing the view
     response
     """
-    profiles = UserProfile.objects.all()
+    user_profiles = UserProfile.objects.all()
     return render(request, 'user_profile/list.html', locals())
 
 
@@ -61,8 +62,16 @@ def update_user_profile(request, user_profile_id):
         user_profile = form.save()
         valid, message = user_profile.check_profile_image()
         if not valid:
+            messages.error(request, message)
             return render(request, 'user_profile/update.html', locals())
         return redirect('read_user_profile', user_profile_id=user_profile.id)
+    else:
+        for field, errors in form.errors.items():
+            for error in errors:
+                messages.error(
+                    request,
+                    f"Erreur dans le champ <<{field}>> : {error}"
+                )
     return render(request, 'user_profile/update.html', locals())
 
 

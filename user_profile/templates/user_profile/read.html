@@ -23,6 +23,23 @@
         </div>
          <hr>
         <div class="row">
+            <div class="col-md-12">
+                {% for message in  messages %}
+                    {% if message.tags == "error" %}
+                        <div class="alert alert-danger">
+                            <p>
+                                {{ message }}
+                            </p>
+                        </div>
+                    {% else %}
+                        <div class="alert alert-info">
+                            <p>
+                               {{ message }}.
+                            </p>
+                        </div>
+                        {% endif %}
+                {% endfor %}
+            </div>
             <div class="col-md-1">
             </div>
             <div class="col-md-4">
