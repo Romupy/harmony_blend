@@ -17,7 +17,7 @@
             <div class="col-md-4">
             </div>
             <div class="col-md-2">
-                <img src="{{ user_profile.image.url }}" class="img-circle img-responsive center-block" alt="Image de profil" />
+                <a href="{% url "read_user_profile" user_profile.id %}"><img src="{{ user_profile.image.url }}" class="img-circle img-responsive center-block" alt="Image de profil" /></a>
             </div>
             <div class="col-md-5">
             </div>
