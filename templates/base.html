@@ -46,10 +46,12 @@
                 <ul class="nav" id="main-menu">
                     <li>
                         <div class="user-img-div">
-                            <img src="" class="img-thumbnail" />
+                            <img src="{{ user.user_profile.image.url }}" class="img-thumbnail" alt="Image de profil" />
 
                             <div class="inner-text">
-                                User
+                                {{ user.user_profile.first_name }} {{ user.user_profile.last_name }}
+                                <br />
+                                <small>Dernière connexion : {{ user.last_login|date:"d/m/Y H:i:s" }}</small>
                             <br />
                                 <small></small>
                             </div>
@@ -57,11 +59,28 @@
 
                     </li>
                     <li>
-                        <a  href="{% url "list_user_profiles" %}"><i class="fa fa-envelope "></i>Voir les profils</a>
-                    </li>
-                    <li>
                         <a  href="index.html"><i class="fa fa-envelope "></i>Messagerie</a>
                     </li>
+                    <li>
+                         <a href="#"><i class="fa fa-user"></i>Profil <span class="fa arrow"></span></a>
+                         <ul class="nav nav-second-level">
+                            <li>
+                                <a  href="{% url "read_user_profile" user.user_profile.id %}"><i class="fa fa-eye"></i>Voir mon profil</a>
+                            </li>
+                             <li>
+                                <a href="{% url "update_user_profile" user.user_profile.id %}"><i class="fa fa-pencil-square-o"></i>Mettre le profil jour</a>
+                            </li>
+                            <li>
+                                <a  href="{% url "list_user_profiles" %}"><i class="fa fa-users"></i>Voir les profils</a>
+                            </li>
+                        </ul>
+                    </li>
+                     <li>
+                        <a class="active-menu-top" href="#"><i class="fa fa-yelp "></i>Extra Pages <span class="fa arrow"></span></a>
+                         <ul class="nav nav-second-level collapse in">
+                            <li>
+                                <a href="invoice.html"><i class="fa fa-coffee"></i>Invoice</a>
+                            </li>
                 </ul>
             </div>
             {% endblock %}
