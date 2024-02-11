@@ -35,6 +35,7 @@
                 <a href="{% url "log_off" %}" class="btn btn-info" title="Déconnexion">Déconnexion</a>
                 {% else %}
                 <a href="{% url "connection" %}" class="btn btn-info" title="Connexion">Connexion</a>
+                <a href="{% url "register" %}" class="btn btn-info" title="Créer un compte">Créer un compte</a>
                 {% endif %}
             </div>
         </nav>
@@ -42,7 +43,26 @@
         <nav class="navbar-default navbar-side" role="navigation">
             {% block nav %}
             <div class="sidebar-collapse">
+                <ul class="nav" id="main-menu">
+                    <li>
+                        <div class="user-img-div">
+                            <img src="" class="img-thumbnail" />
 
+                            <div class="inner-text">
+                                User
+                            <br />
+                                <small></small>
+                            </div>
+                        </div>
+
+                    </li>
+                    <li>
+                        <a  href="{% url "list_user_profiles" %}"><i class="fa fa-envelope "></i>Voir les profils</a>
+                    </li>
+                    <li>
+                        <a  href="index.html"><i class="fa fa-envelope "></i>Messagerie</a>
+                    </li>
+                </ul>
             </div>
             {% endblock %}
         </nav>
