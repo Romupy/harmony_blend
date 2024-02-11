@@ -36,9 +36,7 @@ def register(request):
             user = authenticate(request, username=email, password=password)
             if user is not None:
                 login(request, user)
-            return redirect(
-                'update_user_profile', user_profile_id=user.user_profile.pk
-            )
+            return redirect('update_user_profile')
         else:
             for field, errors in form.errors.items():
                 for error in errors:

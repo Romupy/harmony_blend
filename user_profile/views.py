@@ -41,7 +41,7 @@ def list_user_profiles(request):
 
 
 @login_required
-def update_user_profile(request, user_profile_id):
+def update_user_profile(request):
     """
     View to update a user_profile
 
@@ -54,7 +54,9 @@ def update_user_profile(request, user_profile_id):
     django.http.HttpResponse -- An HttpResponse object representing the view
     response
     """
-    user_profile = get_object_or_404(UserProfile, id=user_profile_id)
+    user_profile = get_object_or_404(
+        UserProfile, id=request.user.user_profile.id
+    )
     form = UserProfileUpdateForm(
         request.POST or None, request.FILES or None, instance=user_profile
     )
@@ -73,23 +75,3 @@ def update_user_profile(request, user_profile_id):
                     f"Erreur dans le champ <<{field}>> : {error}"
                 )
     return render(request, 'user_profile/update.html', locals())
-
-
-@login_required
-def delete_user_profile(request, user_profile_id):
-    """
-    View to delete a user_profile
-
-    Keyword arguments:
-    request -- (django.http.HttpRequest) The HttpRequest object containing all
-    information about HTTP request.
-
-    Returns:
-    django.http.HttpResponse -- An HttpResponse object representing the view
-    response
-    """
-    user_profile = get_object_or_404(UserProfile, id=user_profile_id)
-    if request.method == 'POST':
-        user_profile.delete()
-        return redirect('list_profiles')
-    return render(request, 'user_profile/delete.html', locals())

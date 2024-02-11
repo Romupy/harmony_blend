@@ -10,7 +10,7 @@
             <div class="col-md-12">
                 <h1 class="page-head-line">{{ user_profile }}
                     {% if user_profile.user.id == user.id %}
-                        <a href="{% url "update_user_profile" user_profile.id %}" class="btn btn-info" title=">Mettre à jour mon profil">Mettre à jour mon profil</a>
+                        <a href="{% url "update_user_profile" %}" class="btn btn-info" title=">Mettre à jour mon profil">Mettre à jour mon profil</a>
                     {% endif %}
             </div>
         </div>
