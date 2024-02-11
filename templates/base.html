@@ -31,6 +31,11 @@
 
             <div class="header-right">
                 <a href="message-task.html" class="btn btn-info" title="nouveau message"><b>0 </b><i class="fa fa-envelope-o fa-2x"></i></a>
+                {% if user.is_authenticated %}
+                <a href="{% url "log_off" %}" class="btn btn-info" title="Déconnexion">Déconnexion</a>
+                {% else %}
+                <a href="{% url "connection" %}" class="btn btn-info" title="Connexion">Connexion</a>
+                {% endif %}
             </div>
         </nav>
         <!-- /. NAV TOP  -->
